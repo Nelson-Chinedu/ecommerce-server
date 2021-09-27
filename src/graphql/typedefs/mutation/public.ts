@@ -4,6 +4,7 @@ import { GraphQLString, GraphQLNonNull, GraphQLObjectType } from 'graphql';
 import message from '../generics/message';
 
 import signup from '../../resolvers/public/mutation/signup';
+import signin from '../../resolvers/public/mutation/signin';
 
 export default new GraphQLObjectType({
   name: 'PublicMutation',
@@ -18,6 +19,15 @@ export default new GraphQLObjectType({
         accountType: { type: new GraphQLNonNull(GraphQLString) },
       },
       resolve: signup,
+    },
+    signin: {
+      description: 'Signin user',
+      type: message,
+      args: {
+        email: { type: new GraphQLNonNull(GraphQLString) },
+        password: { type: new GraphQLNonNull(GraphQLString) },
+      },
+      resolve: signin,
     },
   }),
 });

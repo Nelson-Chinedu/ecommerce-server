@@ -2,11 +2,14 @@ import 'reflect-metadata';
 import 'dotenv/config';
 import http from 'http';
 import express from 'express';
-import { ApolloServer } from 'apollo-server-express';
+import { ApolloServer, AuthenticationError } from 'apollo-server-express';
 import { ApolloServerPluginDrainHttpServer } from 'apollo-server-core';
+import { ForbiddenError } from 'apollo-server';
 import cors, { CorsOptions } from 'cors';
 import { createConnection } from 'typeorm';
 import winstonEnvLogger from 'winston-env-logger';
+
+import { verifyToken } from './utils/token';
 
 import schema from './graphql/schema';
 
@@ -24,15 +27,25 @@ export async function startApolloServer() {
   const httpServer = http.createServer(app);
   const server = new ApolloServer({
     schema,
-    context: async ({ req, res }) => {
+    context: async ({ req }) => {
       if (req) {
-        return {
-          req,
-          res,
-        };
+        const bearerToken = req.headers.authorization; // get authorization from header
+        if (!bearerToken) return;
+
+        const token = bearerToken.split(' ')[1]; // split bearer from authorization
+        // if token exist verify and return user
+        try {
+          if (token) {
+            const user = verifyToken(token);
+            if (!user) throw new AuthenticationError('You must be logged in');
+            return { user, isAuthorized: true };
+          }
+        } catch (error: any) {
+          throw new ForbiddenError(error.message);
+        }
       }
     },
-    introspection: true,
+    introspection: process.env.NODE_ENV !== 'production',
     plugins: [ApolloServerPluginDrainHttpServer({ httpServer })],
   });
   await server.start();

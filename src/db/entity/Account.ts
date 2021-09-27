@@ -43,13 +43,9 @@ export default class Account extends BaseEntity {
   })
   updatedAt: Date;
 
-  @OneToOne((_type: any) => Profile, (profile: Profile) => profile.account, {
-    onDelete: 'CASCADE',
-    eager: true,
-  })
-  @JoinColumn()
+  @OneToOne((_type: any) => Profile, (profile: Profile) => profile.account)
+  // @JoinColumn()
   profile: Profile;
-
   @BeforeInsert()
   addId() {
     this.id = uuidv4();

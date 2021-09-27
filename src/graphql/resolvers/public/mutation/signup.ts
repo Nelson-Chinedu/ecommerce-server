@@ -2,7 +2,7 @@ import winstonEnvLogger from 'winston-env-logger';
 import Joi from 'joi';
 import { UserInputError } from 'apollo-server-express';
 
-import { Account } from '../../../../db';
+import { Account, Profile } from '../../../../db';
 import { createToken } from '../../../../utils/token';
 
 const schema = Joi.object({
@@ -36,12 +36,25 @@ const signup = async (
     });
 
     await newAccount.save();
+
+    const newProfile = Profile.create({
+      firstname: '',
+      lastname: '',
+      account: newAccount,
+    });
+    await newProfile.save();
+
     const token = createToken(
       { id: newAccount.id },
       process.env.JWT_KEY as string,
       '7d'
     );
-    return { status: 201, message: 'Account successfully created', token };
+    return {
+      status: 201,
+      message: 'Account successfully created',
+      token,
+      accountType,
+    };
   } catch (error: any) {
     winstonEnvLogger.error({
       message: 'An error occured',

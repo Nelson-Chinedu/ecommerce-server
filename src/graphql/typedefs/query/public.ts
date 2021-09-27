@@ -6,14 +6,14 @@ export default new GraphQLObjectType({
   name: 'PublicQuery',
   description: 'Query accessible to public',
   fields: () => ({
-    createdUser: {
-      description: 'Add new user',
-      type: accountType,
-      args: {
-        email: { type: new GraphQLNonNull(GraphQLString) },
-        password: { type: new GraphQLNonNull(GraphQLString) },
-      },
-      // resolve: () => ({}),
-    },
+    // createdUser: {
+    //   description: 'Add new user',
+    //   type: accountType,
+    //   args: {
+    //     email: { type: new GraphQLNonNull(GraphQLString) },
+    //     password: { type: new GraphQLNonNull(GraphQLString) },
+    //   },
+    //   // resolve: () => ({}),
+    // },
   }),
 });

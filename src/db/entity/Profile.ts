@@ -6,6 +6,7 @@ import {
   BaseEntity,
   OneToOne,
   BeforeInsert,
+  JoinColumn,
 } from 'typeorm';
 
 import Account from './Account';
@@ -24,10 +25,10 @@ export default class Profile extends BaseEntity {
   @Column('varchar', { nullable: true })
   phoneNumber: string;
 
-  @Column('varchar')
+  @Column('varchar', { nullable: true })
   gender: string;
 
-  @Column('varchar')
+  @Column('varchar', { nullable: true })
   region: string;
 
   @Column('varchar', { nullable: true })
@@ -39,7 +40,7 @@ export default class Profile extends BaseEntity {
   @Column('varchar', { nullable: true })
   address: string;
 
-  @Column('varchar')
+  @Column('varchar', { nullable: true })
   imageUrl: string;
 
   @Column('timestamp', { default: () => 'CURRENT_TIMESTAMP(3)' })
@@ -52,7 +53,12 @@ export default class Profile extends BaseEntity {
   })
   updatedAt: Date;
 
-  @OneToOne((_type: any) => Account, (account: Account) => account.profile)
+  @OneToOne((_type: any) => Account, (account: Account) => account.profile, {
+    onDelete: 'CASCADE',
+    eager: true,
+  })
+  // account: Account;
+  @JoinColumn()
   account: Account;
 
   @BeforeInsert()
