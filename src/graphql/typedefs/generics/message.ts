@@ -1,4 +1,9 @@
-import { GraphQLNonNull, GraphQLObjectType, GraphQLString } from 'graphql';
+import {
+  GraphQLBoolean,
+  GraphQLNonNull,
+  GraphQLObjectType,
+  GraphQLString,
+} from 'graphql';
 
 export default new GraphQLObjectType({
   name: 'message',
@@ -11,6 +16,12 @@ export default new GraphQLObjectType({
     },
     status: {
       type: new GraphQLNonNull(GraphQLString),
+    },
+    accountType: {
+      type: new GraphQLNonNull(GraphQLString),
+    },
+    isLoggedin: {
+      type: GraphQLBoolean,
     },
   },
 });
