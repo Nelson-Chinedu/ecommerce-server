@@ -3,6 +3,7 @@ import { GraphQLString, GraphQLNonNull, GraphQLObjectType } from 'graphql';
 import message from '../generics/message';
 
 import updateProfile from '../../resolvers/client/mutation/updateProfile';
+import changePassword from '../../resolvers/client/mutation/changePassword';
 
 export default new GraphQLObjectType({
   name: 'ClientMutation',
@@ -23,6 +24,16 @@ export default new GraphQLObjectType({
         imageUrl: { type: GraphQLString },
       },
       resolve: updateProfile,
+    },
+    changePassword: {
+      description: 'Change user profile',
+      type: message,
+      args: {
+        currentPassword: { type: new GraphQLNonNull(GraphQLString) },
+        newPassword: { type: new GraphQLNonNull(GraphQLString) },
+        confirmPassword: { type: new GraphQLNonNull(GraphQLString) },
+      },
+      resolve: changePassword,
     },
   }),
 });
