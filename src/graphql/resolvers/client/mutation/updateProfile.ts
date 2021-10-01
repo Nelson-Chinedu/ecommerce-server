@@ -1,6 +1,7 @@
 import winstonEnvLogger from 'winston-env-logger';
 import { getConnection } from 'typeorm';
 import { ForbiddenError } from 'apollo-server';
+
 import { Account, Profile } from '../../../../db';
 
 interface IContext {
