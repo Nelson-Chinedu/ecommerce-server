@@ -5,13 +5,14 @@ import {
   PrimaryColumn,
   Column,
   OneToOne,
-  JoinColumn,
   BeforeInsert,
+  OneToMany,
 } from 'typeorm';
 
 import { hashPassword } from '../../utils/passwordOp';
 
 import Profile from './Profile';
+import Product from './Product';
 
 @Entity('Account')
 export default class Account extends BaseEntity {
@@ -44,8 +45,11 @@ export default class Account extends BaseEntity {
   updatedAt: Date;
 
   @OneToOne((_type: any) => Profile, (profile: Profile) => profile.account)
-  // @JoinColumn()
   profile: Profile;
+
+  @OneToMany((_type: any) => Product, (product: Product) => product.account)
+  product: Product;
+
   @BeforeInsert()
   addId() {
     this.id = uuidv4();
