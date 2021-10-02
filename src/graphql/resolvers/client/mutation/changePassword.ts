@@ -6,21 +6,12 @@ import { Account } from '../../../../db';
 
 import { hashPassword, isValidPassword } from '../../../../utils/passwordOp';
 
-interface IContext {
-  user: {
-    id: string;
-  };
-}
-
-interface IArgs {
-  currentPassword: string;
-  newPassword: string;
-  confirmPassword: string;
-}
+import IContext from '../../../../interface/IContext';
+import { IChangePasswordArgs } from '../../../../interface/IArgs';
 
 const changePassword = async (
   _parent: unknown,
-  args: IArgs,
+  args: IChangePasswordArgs,
   { user: { id } }: IContext
 ) => {
   const { currentPassword, newPassword, confirmPassword } = args;

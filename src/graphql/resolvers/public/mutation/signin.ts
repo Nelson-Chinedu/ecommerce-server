@@ -34,7 +34,7 @@ const signin = async (
       throw new UserInputError('Incorrect email or password');
     }
     if (account && account.blocked) {
-      throw new ForbiddenError('Account blocked, kindly contact admin');
+      throw new ForbiddenError('Account blocked, kindly contact support');
     }
 
     const token = createToken(

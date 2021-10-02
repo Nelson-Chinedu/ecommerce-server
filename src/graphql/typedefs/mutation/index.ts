@@ -9,10 +9,12 @@ export default new GraphQLObjectType({
   description: 'Root mutattion for multibuy',
   fields: () => ({
     public: {
+      description: 'Public mutations',
       type: PublicMutation,
       resolve: () => ({}),
     },
     client: {
+      description: 'Client mutations',
       type: ClientMutation,
       resolve: (_parent, _args, { isAuthorized }) => {
         if (isAuthorized) {

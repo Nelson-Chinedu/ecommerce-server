@@ -5,7 +5,7 @@ import PublicQuery from './public';
 import ClientQuery from './client';
 
 export default new GraphQLObjectType({
-  name: 'Queryk',
+  name: 'Query',
   description: 'Root mutattion for multibuy',
   fields: () => ({
     // public: {
@@ -13,6 +13,7 @@ export default new GraphQLObjectType({
     //   resolve: () => ({}),
     // },
     client: {
+      description: 'Client Queries',
       type: ClientQuery,
       resolve: (_parent, _args, { isAuthorized }) => {
         if (isAuthorized) {

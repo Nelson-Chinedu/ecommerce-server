@@ -1,9 +1,15 @@
-import { GraphQLString, GraphQLNonNull, GraphQLObjectType } from 'graphql';
+import {
+  GraphQLString,
+  GraphQLNonNull,
+  GraphQLObjectType,
+  GraphQLList,
+} from 'graphql';
 
 import message from '../generics/message';
 
 import updateProfile from '../../resolvers/client/mutation/updateProfile';
 import changePassword from '../../resolvers/client/mutation/changePassword';
+import addProduct from '../../resolvers/client/mutation/addProduct';
 
 export default new GraphQLObjectType({
   name: 'ClientMutation',
@@ -34,6 +40,26 @@ export default new GraphQLObjectType({
         confirmPassword: { type: new GraphQLNonNull(GraphQLString) },
       },
       resolve: changePassword,
+    },
+    addProduct: {
+      description: 'Add product',
+      type: message,
+      args: {
+        productName: { type: new GraphQLNonNull(GraphQLString) },
+        productDescription: { type: new GraphQLNonNull(GraphQLString) },
+        productSizes: {
+          type: new GraphQLNonNull(new GraphQLList(GraphQLString)),
+        },
+        colors: { type: new GraphQLNonNull(new GraphQLList(GraphQLString)) },
+        category: { type: new GraphQLNonNull(new GraphQLList(GraphQLString)) },
+        stock: { type: new GraphQLNonNull(GraphQLString) },
+        sold: { type: new GraphQLNonNull(GraphQLString) },
+        tags: { type: new GraphQLNonNull(new GraphQLList(GraphQLString)) },
+        revenue: { type: new GraphQLNonNull(GraphQLString) },
+        oldPrice: { type: new GraphQLNonNull(GraphQLString) },
+        newPrice: { type: new GraphQLNonNull(GraphQLString) },
+      },
+      resolve: addProduct,
     },
   }),
 });

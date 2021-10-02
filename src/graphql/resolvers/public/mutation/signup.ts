@@ -40,6 +40,13 @@ const signup = async (
     const newProfile = Profile.create({
       firstname: '',
       lastname: '',
+      phoneNumber: '',
+      gender: '',
+      region: '',
+      city: '',
+      country: '',
+      address: '',
+      imageUrl: '',
       account: newAccount,
     });
     await newProfile.save();

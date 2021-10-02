@@ -4,26 +4,12 @@ import { ForbiddenError } from 'apollo-server';
 
 import { Account, Profile } from '../../../../db';
 
-interface IContext {
-  user: {
-    id: string;
-  };
-}
-interface IArgs {
-  firstname: string;
-  lastname: string;
-  phoneNumber: string;
-  gender: string;
-  region: string;
-  city: string;
-  country: string;
-  address: string;
-  imageUrl: string;
-}
+import IContext from '../../../../interface/IContext';
+import { IUpdateProfileArgs } from '../../../../interface/IArgs';
 
 const updateProfile = async (
   _parent: unknown,
-  args: IArgs,
+  args: IUpdateProfileArgs,
   { user: { id } }: IContext
 ) => {
   try {
@@ -71,6 +57,7 @@ const updateProfile = async (
       message: 'An error occured',
       error,
     });
+    throw error;
   }
 };
 
