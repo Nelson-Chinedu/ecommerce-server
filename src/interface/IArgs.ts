@@ -21,11 +21,11 @@ export interface IAddProduct {
   productDescription: string;
   productSizes: string[];
   colors: string[];
-  category: string[];
+  category: string;
   stock: 'In-stock' | 'Out-of-stock';
   sold: string;
   tags: string[];
-  revenue: string;
+  // revenue: string;
   oldPrice: string;
   newPrice: string;
 }

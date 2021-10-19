@@ -20,7 +20,7 @@ const addProduct = async (
     stock,
     sold,
     tags,
-    revenue,
+    // revenue,
     oldPrice,
     newPrice,
   } = args;
@@ -32,9 +32,9 @@ const addProduct = async (
       !colors ||
       !category ||
       !stock ||
-      !sold ||
+      // !sold ||
       !tags ||
-      !revenue ||
+      // !revenue ||
       !oldPrice ||
       !newPrice
     ) {
@@ -55,11 +55,11 @@ const addProduct = async (
       productDescription,
       productSizes,
       colors,
-      category,
       stock,
       sold,
       tags,
-      revenue,
+      category,
+      // revenue,
       oldPrice,
       newPrice,
       account,

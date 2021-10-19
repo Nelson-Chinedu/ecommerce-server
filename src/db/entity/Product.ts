@@ -32,8 +32,8 @@ export default class Product extends BaseEntity {
   @Column('varchar', { array: true })
   colors: string[];
 
-  @Column('varchar', { array: true })
-  category: string[];
+  @Column('varchar')
+  category: string;
 
   @Column('varchar')
   stock: string;
@@ -43,9 +43,6 @@ export default class Product extends BaseEntity {
 
   @Column('varchar', { array: true })
   tags: string[];
-
-  @Column('varchar')
-  revenue: string;
 
   @Column('varchar')
   oldPrice: string;
@@ -67,8 +64,6 @@ export default class Product extends BaseEntity {
     onDelete: 'CASCADE',
     eager: true,
   })
-
-  // account: Account;
   @JoinColumn()
   account: Account;
 
