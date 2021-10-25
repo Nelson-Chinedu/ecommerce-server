@@ -1,63 +1,56 @@
 import { v4 as uuidv4 } from 'uuid';
 import {
-  PrimaryColumn,
-  Column,
   Entity,
   BaseEntity,
-  OneToOne,
+  Column,
+  PrimaryColumn,
+  CreateDateColumn,
+  UpdateDateColumn,
   BeforeInsert,
+  OneToOne,
   JoinColumn,
 } from 'typeorm';
 
 import Account from './Account';
+import Location from './Location';
+import Store from './Store';
 
 @Entity('Profile')
 export default class Profile extends BaseEntity {
   @PrimaryColumn('uuid')
   id: string;
 
-  @Column('varchar', { length: 255 })
+  @Column()
   firstname: string;
 
-  @Column('varchar', { length: 255 })
+  @Column()
   lastname: string;
 
-  @Column('varchar', { nullable: true })
+  @Column()
   phoneNumber: string;
 
   @Column('varchar', { nullable: true })
   gender: string;
 
-  @Column('varchar', { nullable: true })
-  region: string;
-
-  @Column('varchar', { nullable: true })
-  city: string;
-
-  @Column('varchar', { nullable: true })
-  country: string;
-
-  @Column('varchar', { nullable: true })
-  address: string;
-
-  @Column('varchar', { nullable: true })
+  @Column()
   imageUrl: string;
 
-  @Column('timestamp', { default: () => 'CURRENT_TIMESTAMP(3)' })
+  @CreateDateColumn()
   createdAt: Date;
 
-  @Column('timestamp', {
-    precision: 3,
-    default: () => 'CURRENT_TIMESTAMP(3)',
-    onUpdate: 'CURRENT_TIMESTAMP(3)',
-  })
+  @UpdateDateColumn()
   updatedAt: Date;
+
+  @OneToOne((_type: any) => Location, (location: Location) => location.profile)
+  location: Location;
+
+  @OneToOne((_type: any) => Store, (store: Store) => store.profile)
+  store: Store;
 
   @OneToOne((_type: any) => Account, (account: Account) => account.profile, {
     onDelete: 'CASCADE',
     eager: true,
   })
-  // account: Account;
   @JoinColumn()
   account: Account;
 

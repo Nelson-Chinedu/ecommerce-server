@@ -12,29 +12,25 @@ const addProduct = async (
   { user: { id } }: IContext
 ) => {
   const {
-    productName,
-    productDescription,
-    productSizes,
+    name,
+    description,
+    sizes,
     colors,
     category,
     stock,
-    sold,
     tags,
-    // revenue,
     oldPrice,
     newPrice,
   } = args;
   try {
     if (
-      !productName ||
-      !productDescription ||
-      !productSizes ||
+      !name ||
+      !description ||
+      !sizes ||
       !colors ||
       !category ||
       !stock ||
-      // !sold ||
       !tags ||
-      // !revenue ||
       !oldPrice ||
       !newPrice
     ) {
@@ -51,20 +47,17 @@ const addProduct = async (
       throw new ForbiddenError('Account blocked, kindly contact support');
     }
     const newProduct = Product.create({
-      productName,
-      productDescription,
-      productSizes,
+      name,
+      description,
+      sizes,
       colors,
       stock,
-      sold,
       tags,
       category,
-      // revenue,
       oldPrice,
       newPrice,
       account,
     });
-
     await newProduct.save();
     return { message: 'Product added successfully' };
   } catch (error) {
