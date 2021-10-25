@@ -2,8 +2,9 @@ import winstonEnvLogger from 'winston-env-logger';
 import Joi from 'joi';
 import { UserInputError } from 'apollo-server-express';
 
-import { Account, Profile } from '../../../../db';
+import { Account, Profile, Location, Store } from '../../../../db';
 import { createToken } from '../../../../utils/token';
+import { AccountType } from '../../../../db/entity/Account';
 
 const schema = Joi.object({
   email: Joi.string()
@@ -14,13 +15,12 @@ const schema = Joi.object({
 
 const signup = async (
   _parent: unknown,
-  args: { email: string; password: string; accountType: string },
+  args: { email: string; password: string; accountType: AccountType },
   _context: unknown
 ) => {
   const { email, password, accountType } = args;
   try {
     await schema.validateAsync({ email, password });
-
     const account = await Account.findOne({
       where: {
         email,
@@ -34,7 +34,6 @@ const signup = async (
       password,
       accountType,
     });
-
     await newAccount.save();
 
     const newProfile = Profile.create({
@@ -42,14 +41,27 @@ const signup = async (
       lastname: '',
       phoneNumber: '',
       gender: '',
-      region: '',
-      city: '',
-      country: '',
-      address: '',
       imageUrl: '',
       account: newAccount,
     });
     await newProfile.save();
+
+    if (newAccount.accountType === AccountType.MERCHANT) {
+      const newStore = Store.create({
+        name: '',
+        currency: '',
+        profile: newProfile,
+      });
+      await newStore.save();
+    }
+
+    const newLocation = Location.create({
+      city: '',
+      country: '',
+      address: '',
+      profile: newProfile,
+    });
+    await newLocation.save();
 
     const token = createToken(
       { id: newAccount.id },

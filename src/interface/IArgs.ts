@@ -1,31 +1,43 @@
+import { Product_Size, Stock } from '../db/entity/Product';
+
+export interface IUser {
+  firstname: string;
+  lastname: string;
+  phoneNumber: string;
+  country: string;
+  emailAddress: string;
+}
+
 export interface IChangePasswordArgs {
   currentPassword: string;
   newPassword: string;
   confirmPassword: string;
 }
 
-export interface IUpdateProfileArgs {
-  firstname: string;
-  lastname: string;
-  phoneNumber: string;
+export interface IUpdateProfileArgs extends IUser {
   gender: string;
-  region: string;
   city: string;
-  country: string;
   address: string;
+  storeName?: string;
+  currency?: string;
   imageUrl: string;
 }
 
+export interface IUpdateSettingArgs extends IUser {
+  storeName: string;
+  currency: string;
+  address: string;
+}
+
 export interface IAddProduct {
-  productName: string;
-  productDescription: string;
-  productSizes: string[];
+  name: string;
+  description: string;
+  sizes: Product_Size[];
   colors: string[];
   category: string;
-  stock: 'In-stock' | 'Out-of-stock';
-  sold: string;
+  stock: Stock;
+  sold?: string;
   tags: string[];
-  // revenue: string;
   oldPrice: string;
   newPrice: string;
 }

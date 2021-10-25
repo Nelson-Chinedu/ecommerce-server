@@ -2,10 +2,12 @@ import { v4 as uuidv4 } from 'uuid';
 import {
   Entity,
   BaseEntity,
-  PrimaryColumn,
   Column,
-  OneToOne,
+  PrimaryColumn,
+  CreateDateColumn,
+  UpdateDateColumn,
   BeforeInsert,
+  OneToOne,
   OneToMany,
 } from 'typeorm';
 
@@ -13,6 +15,11 @@ import { hashPassword } from '../../utils/passwordOp';
 
 import Profile from './Profile';
 import Product from './Product';
+
+export enum AccountType {
+  MERCHANT = 'm',
+  CUSTOMER = 'c',
+}
 
 @Entity('Account')
 export default class Account extends BaseEntity {
@@ -25,30 +32,29 @@ export default class Account extends BaseEntity {
   @Column('varchar', { length: 255 })
   password: string;
 
+  @Column({
+    type: 'enum',
+    enum: AccountType,
+  })
+  accountType: AccountType;
+
   @Column({ default: false })
   blocked: boolean;
 
   @Column({ default: false })
   verified: boolean;
 
-  @Column('varchar')
-  accountType: string;
-
-  @Column('timestamp', { default: () => 'CURRENT_TIMESTAMP(3)' })
+  @CreateDateColumn()
   createdAt: Date;
 
-  @Column('timestamp', {
-    precision: 3,
-    default: () => 'CURRENT_TIMESTAMP(3)',
-    onUpdate: 'CURRENT_TIMESTAMP(3)',
-  })
+  @UpdateDateColumn()
   updatedAt: Date;
 
   @OneToOne((_type: any) => Profile, (profile: Profile) => profile.account)
   profile: Profile;
 
   @OneToMany((_type: any) => Product, (product: Product) => product.account)
-  product: Product;
+  product: Product[];
 
   @BeforeInsert()
   addId() {
