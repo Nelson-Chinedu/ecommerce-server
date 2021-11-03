@@ -23,10 +23,9 @@ export interface IUpdateProfileArgs extends IUser {
   imageUrl: string;
 }
 
-export interface IUpdateSettingArgs extends IUser {
+export interface IUpdateSettingArgs {
   storeName: string;
   currency: string;
-  address: string;
 }
 
 export interface IAddProduct {

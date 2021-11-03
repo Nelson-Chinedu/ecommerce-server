@@ -1,8 +1,8 @@
 import { GraphQLObjectType } from 'graphql';
 
-import account from '../generics/account';
-
 import getProfile from '../../resolvers/client/query/profile';
+
+import profile from '../generics/profile';
 
 export default new GraphQLObjectType({
   name: 'ClientQuery',
@@ -10,7 +10,7 @@ export default new GraphQLObjectType({
   fields: () => ({
     getProfile: {
       description: 'Get user profile',
-      type: account,
+      type: profile,
       resolve: getProfile,
     },
   }),
