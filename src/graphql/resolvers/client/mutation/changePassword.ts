@@ -16,7 +16,7 @@ const changePassword = async (
 ) => {
   const { currentPassword, newPassword, confirmPassword } = args;
   try {
-    if (!currentPassword || !newPassword || !confirmPassword) {
+    if (currentPassword && !newPassword && !confirmPassword) {
       throw new UserInputError('All fields are required');
     }
     const account = await Account.findOne({

@@ -10,6 +10,7 @@ import message from '../generics/message';
 import updateProfile from '../../resolvers/client/mutation/updateProfile';
 import changePassword from '../../resolvers/client/mutation/changePassword';
 import addProduct from '../../resolvers/client/mutation/addProduct';
+import updateStore from '../../resolvers/client/mutation/updateStore';
 
 export default new GraphQLObjectType({
   name: 'ClientMutation',
@@ -31,6 +32,15 @@ export default new GraphQLObjectType({
         imageUrl: { type: GraphQLString },
       },
       resolve: updateProfile,
+    },
+    updateStore: {
+      description: 'Update user store',
+      type: message,
+      args: {
+        storeName: { type: new GraphQLNonNull(GraphQLString) },
+        currency: { type: new GraphQLNonNull(GraphQLString) },
+      },
+      resolve: updateStore,
     },
     changePassword: {
       description: 'Change user profile',
@@ -54,7 +64,6 @@ export default new GraphQLObjectType({
         colors: { type: new GraphQLNonNull(new GraphQLList(GraphQLString)) },
         category: { type: new GraphQLNonNull(GraphQLString) },
         stock: { type: new GraphQLNonNull(GraphQLString) },
-        // sold: { type: GraphQLString },
         tags: { type: new GraphQLNonNull(new GraphQLList(GraphQLString)) },
         oldPrice: { type: new GraphQLNonNull(GraphQLString) },
         newPrice: { type: new GraphQLNonNull(GraphQLString) },

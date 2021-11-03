@@ -4,6 +4,9 @@ import {
   GraphQLString,
   GraphQLID,
 } from 'graphql';
+import account from './account';
+import location from './location';
+import store from './store';
 
 export default new GraphQLObjectType({
   name: 'profile',
@@ -37,6 +40,15 @@ export default new GraphQLObjectType({
     },
     imageUrl: {
       type: GraphQLString,
+    },
+    store: {
+      type: store,
+    },
+    location: {
+      type: location,
+    },
+    account: {
+      type: account,
     },
   },
 });

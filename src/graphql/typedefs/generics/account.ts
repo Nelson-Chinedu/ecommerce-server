@@ -6,8 +6,6 @@ import {
   GraphQLBoolean,
 } from 'graphql';
 
-import profile from './profile';
-
 export default new GraphQLObjectType({
   name: 'account',
   fields: {
@@ -28,9 +26,6 @@ export default new GraphQLObjectType({
     },
     accountType: {
       type: GraphQLString,
-    },
-    profile: {
-      type: profile,
     },
   },
 });

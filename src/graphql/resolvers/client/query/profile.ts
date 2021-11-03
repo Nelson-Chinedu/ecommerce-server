@@ -1,6 +1,8 @@
 import winstonEnvLogger from 'winston-env-logger';
 import { ForbiddenError } from 'apollo-server';
-import { Account } from '../../../../db';
+import { getRepository } from 'typeorm';
+
+import { Profile as UserProfile } from '../../../../db';
 
 interface IContext {
   user: {
@@ -14,20 +16,33 @@ const Profile = async (
   { user: { id } }: IContext
 ) => {
   try {
-    const account = await Account.findOne({
-      where: {
-        id,
-      },
-      relations: ['profile'],
+    const user = await getRepository(UserProfile).find({
+      relations: ['store', 'location'],
+      where: { account: id },
     });
 
-    if (!account) throw new ForbiddenError('Account does not exist');
+    if (!user) throw new ForbiddenError('Account does not exist');
 
-    const { email, profile } = account;
+    const {
+      firstname,
+      lastname,
+      phoneNumber,
+      gender,
+      imageUrl,
+      store,
+      location,
+      account,
+    } = user[0];
 
     return {
-      email,
-      profile,
+      firstname,
+      lastname,
+      phoneNumber,
+      gender,
+      imageUrl,
+      store,
+      location,
+      account,
     };
   } catch (error) {
     winstonEnvLogger.error({
