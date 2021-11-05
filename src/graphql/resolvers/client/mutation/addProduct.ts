@@ -6,6 +6,8 @@ import { Account, Product } from '../../../../db';
 import IContext from '../../../../interface/IContext';
 import { IAddProduct } from '../../../../interface/IArgs';
 
+import { AccountType } from '../../../../db/entity/Account';
+
 const addProduct = async (
   _parent: unknown,
   args: IAddProduct,
@@ -41,7 +43,7 @@ const addProduct = async (
         id,
       },
     });
-    if (!account || (account && account.accountType !== 'm')) {
+    if (!account || (account && account.accountType !== AccountType.MERCHANT)) {
       throw new ForbiddenError('Permission denied');
     } else if (account && account.blocked) {
       throw new ForbiddenError('Account blocked, kindly contact support');

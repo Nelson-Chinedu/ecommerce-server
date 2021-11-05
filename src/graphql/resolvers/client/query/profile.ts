@@ -4,11 +4,7 @@ import { getRepository } from 'typeorm';
 
 import { Profile as UserProfile } from '../../../../db';
 
-interface IContext {
-  user: {
-    id: string;
-  };
-}
+import IContext from '../../../../interface/IContext';
 
 const Profile = async (
   _parent: unknown,
@@ -49,6 +45,7 @@ const Profile = async (
       error,
       message: 'An error occured',
     });
+    throw error;
   }
 };
 
