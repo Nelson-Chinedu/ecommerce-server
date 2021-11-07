@@ -41,5 +41,8 @@ export default new GraphQLObjectType({
     newPrice: {
       type: GraphQLString,
     },
+    imageUrl: {
+      type: GraphQLString,
+    },
   },
 });

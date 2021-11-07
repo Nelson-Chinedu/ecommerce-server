@@ -31,7 +31,7 @@ const updateProfile = async (
       },
       relations: ['profile'],
     });
-    console.log(account?.accountType, '***');
+
     if (!account) throw new ForbiddenError('Account does not exist');
 
     await getConnection()

@@ -39,4 +39,5 @@ export interface IAddProduct {
   tags: string[];
   oldPrice: string;
   newPrice: string;
+  imageUrl: string;
 }

@@ -60,6 +60,9 @@ export default class Product extends BaseEntity {
   @Column('varchar', { array: true })
   tags: string[];
 
+  @Column('varchar', { nullable: true })
+  imageUrl: string;
+
   @CreateDateColumn()
   createdAt: Date;
 
