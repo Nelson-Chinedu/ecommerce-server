@@ -7,4 +7,5 @@ build/
 tmp/
 temp/
 logs
+.DS_Store
 # public/

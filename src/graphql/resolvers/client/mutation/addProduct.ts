@@ -23,6 +23,7 @@ const addProduct = async (
     tags,
     oldPrice,
     newPrice,
+    imageUrl,
   } = args;
   try {
     if (
@@ -34,7 +35,8 @@ const addProduct = async (
       !stock ||
       !tags ||
       !oldPrice ||
-      !newPrice
+      !newPrice ||
+      !imageUrl
     ) {
       throw new UserInputError('All fields are required');
     }
@@ -51,6 +53,7 @@ const addProduct = async (
     const newProduct = Product.create({
       name,
       description,
+      imageUrl,
       sizes,
       colors,
       stock,

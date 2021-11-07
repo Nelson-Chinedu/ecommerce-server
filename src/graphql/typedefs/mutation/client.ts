@@ -4,13 +4,16 @@ import {
   GraphQLObjectType,
   GraphQLList,
 } from 'graphql';
+import { GraphQLUpload } from 'graphql-upload';
 
 import message from '../generics/message';
+import upload from '../generics/upload';
 
 import updateProfile from '../../resolvers/client/mutation/updateProfile';
 import changePassword from '../../resolvers/client/mutation/changePassword';
 import addProduct from '../../resolvers/client/mutation/addProduct';
 import updateStore from '../../resolvers/client/mutation/updateStore';
+import fileUpload from '../../resolvers/client/mutation/fileUpload';
 
 export default new GraphQLObjectType({
   name: 'ClientMutation',
@@ -67,8 +70,17 @@ export default new GraphQLObjectType({
         tags: { type: new GraphQLNonNull(new GraphQLList(GraphQLString)) },
         oldPrice: { type: new GraphQLNonNull(GraphQLString) },
         newPrice: { type: new GraphQLNonNull(GraphQLString) },
+        imageUrl: { type: GraphQLString },
       },
       resolve: addProduct,
+    },
+    fileUpload: {
+      description: 'Upload product image',
+      type: upload,
+      args: {
+        file: { type: GraphQLUpload },
+      },
+      resolve: fileUpload,
     },
   }),
 });

@@ -5,6 +5,7 @@ import express from 'express';
 import { ApolloServer, AuthenticationError } from 'apollo-server-express';
 import { ApolloServerPluginDrainHttpServer } from 'apollo-server-core';
 import { ForbiddenError } from 'apollo-server';
+import { graphqlUploadExpress } from 'graphql-upload';
 import cors, { CorsOptions } from 'cors';
 import { createConnection } from 'typeorm';
 import winstonEnvLogger from 'winston-env-logger';
@@ -21,7 +22,9 @@ const corsOptions: CorsOptions = {
   optionsSuccessStatus: 200,
 };
 
+app.use(express.static('public'));
 app.use(cors(corsOptions));
+app.use(graphqlUploadExpress());
 
 export async function startApolloServer() {
   const httpServer = http.createServer(app);
@@ -55,7 +58,7 @@ export async function startApolloServer() {
     .then(() => {
       httpServer.listen(port, () => {
         winstonEnvLogger.info(
-          `🚀 server ready at http://localhost:${port}${server.graphqlPath} `
+          `🚀 server ready at ${process.env.BASE_URL}:${port}${server.graphqlPath} `
         );
       });
     })
