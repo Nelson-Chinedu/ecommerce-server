@@ -8,10 +8,10 @@ export default new GraphQLObjectType({
   name: 'Query',
   description: 'Root mutattion for multibuy',
   fields: () => ({
-    // public: {
-    //   type: PublicQuery,
-    //   resolve: () => ({}),
-    // },
+    public: {
+      type: PublicQuery,
+      resolve: () => ({}),
+    },
     client: {
       description: 'Client Queries',
       type: ClientQuery,
