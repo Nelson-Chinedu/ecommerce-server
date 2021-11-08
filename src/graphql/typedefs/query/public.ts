@@ -1,19 +1,21 @@
-import { GraphQLString, GraphQLNonNull, GraphQLObjectType } from 'graphql';
+import { GraphQLObjectType, GraphQLInt } from 'graphql';
 
-import accountType from '../generics/account';
+import getProducts from '../../resolvers/client/query/getProducts';
+
+import products from '../generics/products';
 
 export default new GraphQLObjectType({
   name: 'PublicQuery',
   description: 'Query accessible to public',
   fields: () => ({
-    // createdUser: {
-    //   description: 'Add new user',
-    //   type: accountType,
-    //   args: {
-    //     email: { type: new GraphQLNonNull(GraphQLString) },
-    //     password: { type: new GraphQLNonNull(GraphQLString) },
-    //   },
-    //   // resolve: () => ({}),
-    // },
+    getProducts: {
+      description: 'Get every merchant product for user',
+      type: products,
+      args: {
+        take: { type: GraphQLInt },
+        skip: { type: GraphQLInt },
+      },
+      resolve: getProducts,
+    },
   }),
 });
