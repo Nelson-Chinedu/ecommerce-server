@@ -1,8 +1,7 @@
 import { GraphQLInt, GraphQLNonNull, GraphQLObjectType } from 'graphql';
 
-import getProduct from '../../resolvers/client/query/getProduct';
-import getProfile from '../../resolvers/client/query/profile';
 import getProducts from '../../resolvers/client/query/getProducts';
+import getProfile from '../../resolvers/client/query/profile';
 
 import profile from '../generics/profile';
 import products from '../generics/products';
@@ -17,20 +16,11 @@ export default new GraphQLObjectType({
       resolve: getProfile,
     },
     getProduct: {
-      description: 'Get merchant product',
+      description: 'Get merchant products',
       type: products,
       args: {
         take: { type: new GraphQLNonNull(GraphQLInt) },
         skip: { type: new GraphQLNonNull(GraphQLInt) },
-      },
-      resolve: getProduct,
-    },
-    getProducts: {
-      description: 'Get every merchant product for user',
-      type: products,
-      args: {
-        take: { type: GraphQLInt },
-        skip: { type: GraphQLInt },
       },
       resolve: getProducts,
     },

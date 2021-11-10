@@ -1,32 +1,55 @@
 import { getRepository } from 'typeorm';
 import winstonEnvLogger from 'winston-env-logger';
+import { ForbiddenError } from 'apollo-server-errors';
 
-import { Product } from '../../../../db';
+import IContext from '../../../../interface/IContext';
+
+import { Account, Product } from '../../../../db';
+
+import { AccountType } from '../../../../db/entity/Account';
 
 interface IArgs {
   take: number | undefined;
   skip: number | undefined;
 }
 
-const getProducts = async (
+const getProduct = async (
   _parent: unknown,
   args: IArgs,
-  _context: unknown
+  { user: { id } }: IContext
 ) => {
   try {
-    const products = await getRepository(Product)
+    const account = await Account.findOne({
+      where: {
+        id,
+      },
+    });
+    if (!account || (account && account.accountType !== AccountType.MERCHANT)) {
+      throw new ForbiddenError('Permission denied');
+    } else if (
+      account &&
+      account.blocked &&
+      account.accountType === AccountType.MERCHANT
+    ) {
+      throw new ForbiddenError('Account blocked, kindly contact support');
+    }
+    const products: any = await getRepository(Product)
       .createQueryBuilder('product')
+      .where('product.account = :product', {
+        product: account.id,
+      })
       .skip(args.skip)
       .take(args.take)
       .getMany();
+
     return { products };
   } catch (error) {
     winstonEnvLogger.error({
-      message: 'An error occured',
       error,
+      message: 'An error occured',
     });
     throw error;
   }
 };
 
-export default getProducts;
+export default getProduct;
