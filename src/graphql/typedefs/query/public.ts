@@ -1,8 +1,15 @@
-import { GraphQLObjectType, GraphQLInt } from 'graphql';
+import {
+  GraphQLObjectType,
+  GraphQLInt,
+  GraphQLNonNull,
+  GraphQLString,
+} from 'graphql';
 
-import getProducts from '../../resolvers/client/query/getProducts';
+import getProducts from '../../resolvers/public/query/getProducts';
+import getProduct from '../../resolvers/public/query/getProduct';
 
 import products from '../generics/products';
+import product from '../generics/product';
 
 export default new GraphQLObjectType({
   name: 'PublicQuery',
@@ -16,6 +23,14 @@ export default new GraphQLObjectType({
         skip: { type: GraphQLInt },
       },
       resolve: getProducts,
+    },
+    getProduct: {
+      description: 'Get single product',
+      type: product,
+      args: {
+        id: { type: new GraphQLNonNull(GraphQLString) },
+      },
+      resolve: getProduct,
     },
   }),
 });
