@@ -33,7 +33,7 @@ const getProduct = async (
     ) {
       throw new ForbiddenError('Account blocked, kindly contact support');
     }
-    const products: any = await getRepository(Product)
+    const products: Product[] | undefined = await getRepository(Product)
       .createQueryBuilder('product')
       .where('product.account = :product', {
         product: account.id,

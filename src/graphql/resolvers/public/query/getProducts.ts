@@ -14,7 +14,7 @@ const getProducts = async (
   _context: unknown
 ) => {
   try {
-    const products = await getRepository(Product)
+    const products: Product[] | undefined = await getRepository(Product)
       .createQueryBuilder('product')
       .skip(args.skip)
       .take(args.take)

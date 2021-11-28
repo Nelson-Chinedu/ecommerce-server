@@ -16,7 +16,7 @@ const updateProfile = async (
 ) => {
   try {
     const { storeName, currency } = args;
-    const account = await Account.findOne({
+    const account: Account | undefined = await Account.findOne({
       where: {
         id,
       },

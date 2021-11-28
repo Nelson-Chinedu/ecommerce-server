@@ -1,6 +1,5 @@
 import { GraphQLString, GraphQLNonNull, GraphQLObjectType } from 'graphql';
 
-// import account from '../generics/account';
 import message from '../generics/message';
 
 import signup from '../../resolvers/public/mutation/signup';

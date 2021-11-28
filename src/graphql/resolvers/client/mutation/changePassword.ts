@@ -19,7 +19,7 @@ const changePassword = async (
     if (currentPassword && !newPassword && !confirmPassword) {
       throw new UserInputError('All fields are required');
     }
-    const account = await Account.findOne({
+    const account: Account | undefined = await Account.findOne({
       where: {
         id,
       },
@@ -33,7 +33,7 @@ const changePassword = async (
       throw new UserInputError('Password do not match');
     }
 
-    const userPassword = await hashPassword(confirmPassword);
+    const userPassword: string = await hashPassword(confirmPassword);
 
     await getConnection()
       .createQueryBuilder()

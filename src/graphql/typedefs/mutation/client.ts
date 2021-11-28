@@ -3,6 +3,7 @@ import {
   GraphQLNonNull,
   GraphQLObjectType,
   GraphQLList,
+  GraphQLInt,
 } from 'graphql';
 import { GraphQLUpload } from 'graphql-upload';
 
@@ -14,6 +15,7 @@ import changePassword from '../../resolvers/client/mutation/changePassword';
 import addProduct from '../../resolvers/client/mutation/addProduct';
 import updateStore from '../../resolvers/client/mutation/updateStore';
 import fileUpload from '../../resolvers/client/mutation/fileUpload';
+import CheckoutPayment from '../../resolvers/client/mutation/checkoutPayment';
 
 export default new GraphQLObjectType({
   name: 'ClientMutation',
@@ -81,6 +83,16 @@ export default new GraphQLObjectType({
         file: { type: GraphQLUpload },
       },
       resolve: fileUpload,
+    },
+    checkoutPayment: {
+      description: 'Payment Checkout',
+      type: message,
+      args: {
+        price: { type: GraphQLInt },
+        productItems: { type: new GraphQLList(GraphQLString) },
+        merchantId: { type: new GraphQLList(GraphQLString) },
+      },
+      resolve: CheckoutPayment,
     },
   }),
 });
