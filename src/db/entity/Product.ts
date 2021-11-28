@@ -9,9 +9,12 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   ManyToOne,
+  OneToMany,
+  JoinColumn,
 } from 'typeorm';
 
 import Account from './Account';
+import Order from './Order';
 
 export enum Product_Size {
   SMALL = 'S',
@@ -70,7 +73,11 @@ export default class Product extends BaseEntity {
   updatedAt: Date;
 
   @ManyToOne((_type: any) => Account, (account: Account) => account.product)
+  @JoinColumn()
   account: Account;
+
+  @OneToMany((_type: any) => Order, (order: Order) => order.product)
+  orders: Order[];
 
   @BeforeInsert()
   addId() {

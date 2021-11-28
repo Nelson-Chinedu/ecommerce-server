@@ -12,11 +12,14 @@ const getProduct = async (
   _context: unknown
 ) => {
   try {
-    const product: any = await Product.findOne({
+    const product: Product | undefined = await Product.findOne({
       where: { number: id },
+      relations: ['account'],
     });
     if (!product) return null;
+
     const {
+      id: productId,
       number,
       name,
       description,
@@ -28,8 +31,11 @@ const getProduct = async (
       oldPrice,
       newPrice,
       imageUrl,
+      account,
     } = product;
+
     return {
+      productId,
       number,
       name,
       description,
@@ -41,6 +47,7 @@ const getProduct = async (
       oldPrice,
       newPrice,
       imageUrl,
+      account,
     };
   } catch (error) {
     winstonEnvLogger.error({

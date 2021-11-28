@@ -40,7 +40,7 @@ const addProduct = async (
     ) {
       throw new UserInputError('All fields are required');
     }
-    const account = await Account.findOne({
+    const account: Account | undefined = await Account.findOne({
       where: {
         id,
       },
@@ -50,7 +50,7 @@ const addProduct = async (
     } else if (account && account.blocked) {
       throw new ForbiddenError('Account blocked, kindly contact support');
     }
-    const newProduct = Product.create({
+    const newProduct: Product = Product.create({
       name,
       description,
       imageUrl,

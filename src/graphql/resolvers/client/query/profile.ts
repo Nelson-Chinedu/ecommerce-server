@@ -12,7 +12,9 @@ const Profile = async (
   { user: { id } }: IContext
 ) => {
   try {
-    const user = await getRepository(UserProfile).find({
+    const user: UserProfile[] | undefined = await getRepository(
+      UserProfile
+    ).find({
       relations: ['store', 'location'],
       where: { account: id },
     });

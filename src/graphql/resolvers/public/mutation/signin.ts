@@ -22,7 +22,7 @@ const signin = async (
   try {
     await schema.validateAsync({ email, password });
 
-    const account = await Account.findOne({
+    const account: Account | undefined = await Account.findOne({
       where: {
         email,
       },
@@ -37,7 +37,7 @@ const signin = async (
       throw new ForbiddenError('Account blocked, kindly contact support');
     }
 
-    const token = createToken(
+    const token: string = createToken(
       { id: account.id },
       process.env.JWT_KEY as string,
       '7d'

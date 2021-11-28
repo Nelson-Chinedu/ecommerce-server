@@ -5,11 +5,16 @@ import {
   GraphQLList,
 } from 'graphql';
 
+import account from './account';
+
 export default new GraphQLObjectType({
   name: 'product',
   fields: {
     id: {
       type: GraphQLID,
+    },
+    productId: {
+      type: GraphQLString,
     },
     number: {
       type: GraphQLString,
@@ -44,5 +49,6 @@ export default new GraphQLObjectType({
     imageUrl: {
       type: GraphQLString,
     },
+    account: { type: account },
   },
 });

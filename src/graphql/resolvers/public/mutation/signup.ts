@@ -29,14 +29,14 @@ const signup = async (
     if (account) {
       throw new UserInputError('Email address is invalid or already taken');
     }
-    const newAccount = Account.create({
+    const newAccount: Account = Account.create({
       email,
       password,
       accountType,
     });
     await newAccount.save();
 
-    const newProfile = Profile.create({
+    const newProfile: Profile = Profile.create({
       firstname: '',
       lastname: '',
       phoneNumber: '',
@@ -55,7 +55,7 @@ const signup = async (
       await newStore.save();
     }
 
-    const newLocation = Location.create({
+    const newLocation: Location = Location.create({
       city: '',
       country: '',
       address: '',
@@ -63,7 +63,7 @@ const signup = async (
     });
     await newLocation.save();
 
-    const token = createToken(
+    const token: string = createToken(
       { id: newAccount.id },
       process.env.JWT_KEY as string,
       '7d'
