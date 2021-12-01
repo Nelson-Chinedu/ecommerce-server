@@ -9,6 +9,7 @@ export default new GraphQLObjectType({
     merchantId: { type: GraphQLString },
     customerId: { type: GraphQLString },
     status: { type: GraphQLString },
+    createdAt: { type: GraphQLString },
     product: { type: product },
   },
 });

@@ -1,13 +1,20 @@
-import { GraphQLInt, GraphQLNonNull, GraphQLObjectType } from 'graphql';
+import {
+  GraphQLInt,
+  GraphQLNonNull,
+  GraphQLObjectType,
+  GraphQLString,
+} from 'graphql';
 
 import getProducts from '../../resolvers/client/query/getProducts';
 import getProfile from '../../resolvers/client/query/profile';
 import getCustomerOrders from '../../resolvers/client/query/getCustomerOrders';
 import getMerchantOrders from '../../resolvers/client/query/getMerchantOrders';
+import previewOrder from '../../resolvers/client/query/previewOrder';
 
 import profile from '../generics/profile';
 import products from '../generics/products';
 import orders from '../generics/orders';
+import order from '../generics/order';
 
 export default new GraphQLObjectType({
   name: 'ClientQuery',
@@ -36,6 +43,14 @@ export default new GraphQLObjectType({
       description: 'Get merchant orders',
       type: orders,
       resolve: getMerchantOrders,
+    },
+    previewOrder: {
+      description: 'Customer order preview',
+      type: order,
+      args: {
+        productId: { type: new GraphQLNonNull(GraphQLString) },
+      },
+      resolve: previewOrder,
     },
   }),
 });
