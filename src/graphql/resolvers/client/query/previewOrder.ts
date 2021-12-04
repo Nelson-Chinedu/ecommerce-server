@@ -13,7 +13,7 @@ const previewOrder = async (
 ) => {
   const { productId } = args;
   try {
-    const account = await getRepository(Account).findOne({
+    const account: Account | undefined = await getRepository(Account).findOne({
       where: {
         id,
       },

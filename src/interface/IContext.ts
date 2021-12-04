@@ -1,5 +1,5 @@
 export default interface IContext {
   user: {
-    id: string;
+    id: string | any;
   };
 }

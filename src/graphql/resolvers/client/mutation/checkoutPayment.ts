@@ -5,13 +5,15 @@ import IContext from '../../../../interface/IContext';
 
 import { Order } from '../../../../db';
 
+import { ICheckoutPayment } from '../../../../interface/IArgs';
+
 const stripe = new Stripe(process.env.STRIPE_SK as string, {
   apiVersion: '2020-08-27',
 });
 
 const CheckoutPayment = async (
   _parent: unknown,
-  args: { price: number; productItems: string[]; merchantId: string[] },
+  args: ICheckoutPayment,
   { user: { id } }: IContext
 ) => {
   const { price, productItems, merchantId } = args;
@@ -39,7 +41,8 @@ const CheckoutPayment = async (
         const newOrder: Order = Order.create({
           product: productItem,
           merchantId: merchantId[index],
-          customerId: id,
+          // customerId: id,
+          account: id,
         });
 
         newOrder.save();
@@ -52,6 +55,7 @@ const CheckoutPayment = async (
       message: 'An error occured',
       error,
     });
+    throw error;
   }
 };
 

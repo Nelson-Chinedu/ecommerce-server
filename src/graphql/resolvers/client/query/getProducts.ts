@@ -19,7 +19,7 @@ const getProduct = async (
   { user: { id } }: IContext
 ) => {
   try {
-    const account = await Account.findOne({
+    const account: Account | undefined = await Account.findOne({
       where: {
         id,
       },
