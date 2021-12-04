@@ -15,6 +15,7 @@ import { hashPassword } from '../../utils/passwordOp';
 
 import Profile from './Profile';
 import Product from './Product';
+import Order from './Order';
 
 export enum AccountType {
   MERCHANT = 'm',
@@ -55,6 +56,9 @@ export default class Account extends BaseEntity {
 
   @OneToMany((_type: any) => Product, (product: Product) => product.account)
   product: Product[];
+
+  @OneToMany((_type: any) => Order, (order: Order) => order.account)
+  orders: Order[];
 
   @BeforeInsert()
   addId() {

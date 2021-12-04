@@ -12,7 +12,7 @@ const getMerchantOrders = async (
   { user: { id } }: IContext
 ) => {
   try {
-    const account = await getRepository(Account).findOne({
+    const account: Account | undefined = await getRepository(Account).findOne({
       where: {
         id,
       },
@@ -23,9 +23,12 @@ const getMerchantOrders = async (
     } else if (account && account.blocked) {
       throw new ForbiddenError('Account blocked, kindly contact support');
     }
+
     const orders: Order[] | undefined = await getRepository(Order)
       .createQueryBuilder('order')
       .leftJoinAndSelect('order.product', 'product')
+      .leftJoinAndSelect('order.account', 'account')
+      .orderBy('order.createdAt', 'DESC')
       .where('order.merchantId = :order', {
         order: account.id,
       })

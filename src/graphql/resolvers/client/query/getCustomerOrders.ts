@@ -12,7 +12,7 @@ const getCustomerOrders = async (
   { user: { id } }: IContext
 ) => {
   try {
-    const account = await getRepository(Account).findOne({
+    const account: Account | undefined = await getRepository(Account).findOne({
       where: {
         id,
       },
@@ -26,6 +26,7 @@ const getCustomerOrders = async (
     const orders: Order[] | undefined = await getRepository(Order)
       .createQueryBuilder('order')
       .leftJoinAndSelect('order.product', 'product')
+      .orderBy('order.createdAt', 'DESC')
       .where('order.customerId = :order', {
         order: account.id,
       })
@@ -37,6 +38,7 @@ const getCustomerOrders = async (
       message: 'An error occured',
       error,
     });
+    throw error;
   }
 };
 

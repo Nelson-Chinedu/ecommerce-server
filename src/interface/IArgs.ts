@@ -41,3 +41,9 @@ export interface IAddProduct {
   newPrice: string;
   imageUrl: string;
 }
+
+export interface ICheckoutPayment {
+  price: number;
+  productItems: string[];
+  merchantId: string[];
+}
