@@ -10,11 +10,16 @@ import getProfile from '../../resolvers/client/query/profile';
 import getCustomerOrders from '../../resolvers/client/query/getCustomerOrders';
 import getMerchantOrders from '../../resolvers/client/query/getMerchantOrders';
 import previewOrder from '../../resolvers/client/query/previewOrder';
+import getRecentOrders from '../../resolvers/client/query/getRecentOrders';
+import getRecentProducts from '../../resolvers/client/query/getRecentProducts';
+import getTotalMerchantProduct from '../../resolvers/client/query/getTotalMerchantProduct';
+import getTotalMerchantOrder from '../../resolvers/client/query/getTotalMerchantOrder';
 
 import profile from '../generics/profile';
 import products from '../generics/products';
 import orders from '../generics/orders';
 import order from '../generics/order';
+import count from '../generics/count';
 
 export default new GraphQLObjectType({
   name: 'ClientQuery',
@@ -51,6 +56,34 @@ export default new GraphQLObjectType({
         productId: { type: new GraphQLNonNull(GraphQLString) },
       },
       resolve: previewOrder,
+    },
+    getRecentOrders: {
+      description: 'Get merchant recent orders',
+      type: orders,
+      args: {
+        take: { type: new GraphQLNonNull(GraphQLInt) },
+        skip: { type: new GraphQLNonNull(GraphQLInt) },
+      },
+      resolve: getRecentOrders,
+    },
+    getRecentProducts: {
+      description: 'Get merchant recent products',
+      type: products,
+      args: {
+        take: { type: new GraphQLNonNull(GraphQLInt) },
+        skip: { type: new GraphQLNonNull(GraphQLInt) },
+      },
+      resolve: getRecentProducts,
+    },
+    getTotalMerchantProduct: {
+      description: 'Get merchant total product count',
+      type: count,
+      resolve: getTotalMerchantProduct,
+    },
+    getTotalMerchantOrder: {
+      description: 'Get merchant total order count',
+      type: count,
+      resolve: getTotalMerchantOrder,
     },
   }),
 });

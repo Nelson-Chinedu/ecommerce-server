@@ -1,22 +1,22 @@
-import winstonEnvLogger from 'winston-env-logger';
 import { ForbiddenError } from 'apollo-server';
 import { getRepository } from 'typeorm';
+import winstonEnvLogger from 'winston-env-logger';
 
-import { Account, Order } from '../../../../db';
+import { Account, Product } from '../../../../db';
 
+import { IPaginate } from '../../../../interface/IArgs';
 import IContext from '../../../../interface/IContext';
+
 import { checkAccount } from '../../../../utils/checkAccount';
 
-const getMerchantOrders = async (
+const getRecentProducts = async (
   _parent: unknown,
-  _args: unknown,
+  args: IPaginate,
   { user: { id } }: IContext
 ) => {
   try {
     const account: Account | undefined = await getRepository(Account).findOne({
-      where: {
-        id,
-      },
+      where: { id },
     });
 
     const userAccount: string | undefined = checkAccount(account);
@@ -25,17 +25,17 @@ const getMerchantOrders = async (
       throw new ForbiddenError(userAccount);
     }
 
-    const orders: Order[] | undefined = await getRepository(Order)
-      .createQueryBuilder('order')
-      .leftJoinAndSelect('order.product', 'product')
-      .leftJoinAndSelect('order.account', 'account')
-      .orderBy('order.createdAt', 'DESC')
-      .where('order.merchantId = :order', {
-        order: id,
+    const products: Product[] = await getRepository(Product)
+      .createQueryBuilder('product')
+      .orderBy('product.createdAt', 'DESC')
+      .where('product.account = :product', {
+        product: id,
       })
+      .skip(args.skip)
+      .take(args.take)
       .getMany();
 
-    return { orders };
+    return { products };
   } catch (error) {
     winstonEnvLogger.error({
       message: 'An error occured',
@@ -45,4 +45,4 @@ const getMerchantOrders = async (
   }
 };
 
-export default getMerchantOrders;
+export default getRecentProducts;

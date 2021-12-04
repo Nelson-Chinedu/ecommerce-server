@@ -6,12 +6,11 @@ import IContext from '../../../../interface/IContext';
 
 import { Account, Product } from '../../../../db';
 
-import { IPaginate } from '../../../../interface/IArgs';
 import { checkAccount } from '../../../../utils/checkAccount';
 
-const getProduct = async (
+const getTotalMerchantProducts = async (
   _parent: unknown,
-  args: IPaginate,
+  _args: unknown,
   { user: { id } }: IContext
 ) => {
   try {
@@ -27,17 +26,11 @@ const getProduct = async (
       throw new ForbiddenError(userAccount);
     }
 
-    const products: Product[] | undefined = await getRepository(Product)
-      .createQueryBuilder('product')
-      .orderBy('product.createdAt', 'DESC')
-      .where('product.account = :product', {
-        product: id,
-      })
-      .skip(args.skip)
-      .take(args.take)
-      .getMany();
+    const productCount = await getRepository(Product).count({
+      where: { account: id },
+    });
 
-    return { products };
+    return { count: productCount, uv: productCount };
   } catch (error) {
     winstonEnvLogger.error({
       error,
@@ -47,4 +40,4 @@ const getProduct = async (
   }
 };
 
-export default getProduct;
+export default getTotalMerchantProducts;
