@@ -41,7 +41,7 @@ const CheckoutPayment = async (
         const newOrder: Order = Order.create({
           product: productItem,
           merchantId: merchantId[index],
-          // customerId: id,
+          customerId: id,
           account: id,
         });
 

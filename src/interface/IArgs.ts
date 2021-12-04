@@ -47,3 +47,8 @@ export interface ICheckoutPayment {
   productItems: string[];
   merchantId: string[];
 }
+
+export interface IPaginate {
+  take: number | undefined;
+  skip: number | undefined;
+}

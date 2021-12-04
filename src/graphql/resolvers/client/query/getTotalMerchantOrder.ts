@@ -4,14 +4,13 @@ import { ForbiddenError } from 'apollo-server';
 
 import IContext from '../../../../interface/IContext';
 
-import { Account, Product } from '../../../../db';
+import { Account, Order } from '../../../../db';
 
-import { IPaginate } from '../../../../interface/IArgs';
 import { checkAccount } from '../../../../utils/checkAccount';
 
-const getProduct = async (
+const getTotalMerchantOrders = async (
   _parent: unknown,
-  args: IPaginate,
+  _args: unknown,
   { user: { id } }: IContext
 ) => {
   try {
@@ -27,17 +26,11 @@ const getProduct = async (
       throw new ForbiddenError(userAccount);
     }
 
-    const products: Product[] | undefined = await getRepository(Product)
-      .createQueryBuilder('product')
-      .orderBy('product.createdAt', 'DESC')
-      .where('product.account = :product', {
-        product: id,
-      })
-      .skip(args.skip)
-      .take(args.take)
-      .getMany();
+    const orderCount = await getRepository(Order).count({
+      where: { merchantId: id, status: 'delivered' },
+    });
 
-    return { products };
+    return { count: orderCount };
   } catch (error) {
     winstonEnvLogger.error({
       error,
@@ -47,4 +40,4 @@ const getProduct = async (
   }
 };
 
-export default getProduct;
+export default getTotalMerchantOrders;

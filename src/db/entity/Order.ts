@@ -16,7 +16,7 @@ import Account from './Account';
 
 export enum Status {
   processing = 'processing',
-  canceled = 'canceled',
+  canceled = 'cancelled',
   delivered = 'delivered',
 }
 
