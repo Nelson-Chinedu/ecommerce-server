@@ -16,6 +16,7 @@ import addProduct from '../../resolvers/client/mutation/addProduct';
 import updateStore from '../../resolvers/client/mutation/updateStore';
 import fileUpload from '../../resolvers/client/mutation/fileUpload';
 import CheckoutPayment from '../../resolvers/client/mutation/checkoutPayment';
+import deleteProduct from '../../resolvers/client/mutation/deleteProduct';
 
 export default new GraphQLObjectType({
   name: 'ClientMutation',
@@ -93,6 +94,12 @@ export default new GraphQLObjectType({
         merchantId: { type: new GraphQLList(GraphQLString) },
       },
       resolve: CheckoutPayment,
+    },
+    deleteProduct: {
+      description: 'delete merchant product',
+      type: message,
+      args: { productNumber: { type: new GraphQLNonNull(GraphQLString) } },
+      resolve: deleteProduct,
     },
   }),
 });
