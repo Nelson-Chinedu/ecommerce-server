@@ -35,7 +35,10 @@ const deleteProduct = async (
       .execute();
 
     return { message: 'Product deleted successfully' };
-  } catch (error) {
+  } catch (error: any) {
+    if (error.code === '23503') {
+      throw new Error('Unable to delete, Product has one or more order');
+    }
     winstonEnvLogger.error({
       message: 'An error occured',
       error,
