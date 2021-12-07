@@ -14,7 +14,6 @@ const updateOrderStatus = async (
   { user: { id } }: IContext
 ) => {
   const { orderNumber, status } = args;
-  console.log(id);
   try {
     const account = await getRepository(Account).findOne({ where: { id } });
 
@@ -29,7 +28,6 @@ const updateOrderStatus = async (
     });
 
     if (!order) throw new Error('Order not found');
-    console.log(status);
 
     await getConnection()
       .createQueryBuilder()
