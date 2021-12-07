@@ -19,6 +19,7 @@ import CheckoutPayment from '../../resolvers/client/mutation/checkoutPayment';
 import deleteProduct from '../../resolvers/client/mutation/deleteProduct';
 import editProduct from '../../resolvers/client/mutation/editProduct';
 import updateOrderStatus from '../../resolvers/client/mutation/updateOrderStatus';
+import cancelOrder from '../../resolvers/client/mutation/cancelOrder';
 
 export default new GraphQLObjectType({
   name: 'ClientMutation',
@@ -131,6 +132,14 @@ export default new GraphQLObjectType({
         status: { type: new GraphQLNonNull(GraphQLString) },
       },
       resolve: updateOrderStatus,
+    },
+    cancelOrder: {
+      description: 'Cancel client order',
+      type: message,
+      args: {
+        orderNumber: { type: new GraphQLNonNull(GraphQLString) },
+      },
+      resolve: cancelOrder,
     },
   }),
 });
