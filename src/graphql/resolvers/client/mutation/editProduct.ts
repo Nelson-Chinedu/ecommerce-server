@@ -2,17 +2,21 @@ import winstonEnvLogger from 'winston-env-logger';
 import { ForbiddenError, UserInputError } from 'apollo-server';
 
 import { Account, Product } from '../../../../db';
-import { AccountType } from '../../../../db/entity/Account';
 
 import IContext from '../../../../interface/IContext';
 import { IProduct } from '../../../../interface/IArgs';
 
-const addProduct = async (
+import { getConnection, getRepository } from 'typeorm';
+
+import { checkAccount } from '../../../../utils/checkAccount';
+
+const editProduct = async (
   _parent: unknown,
   args: IProduct,
   { user: { id } }: IContext
 ) => {
   const {
+    productNumber,
     name,
     description,
     sizes,
@@ -25,6 +29,14 @@ const addProduct = async (
     imageUrl,
   } = args;
   try {
+    const account = await getRepository(Account).findOne({ where: { id } });
+
+    const userAccount: string | undefined = checkAccount(account);
+
+    if (userAccount) {
+      throw new ForbiddenError(userAccount);
+    }
+
     if (
       !name ||
       !description ||
@@ -39,31 +51,25 @@ const addProduct = async (
     ) {
       throw new UserInputError('All fields are required');
     }
-    const account: Account | undefined = await Account.findOne({
-      where: {
-        id,
-      },
-    });
-    if (!account || (account && account.accountType !== AccountType.MERCHANT)) {
-      throw new ForbiddenError('Permission denied');
-    } else if (account && account.blocked) {
-      throw new ForbiddenError('Account blocked, kindly contact support');
-    }
-    const newProduct: Product = Product.create({
-      name,
-      description,
-      imageUrl,
-      sizes,
-      colors,
-      stock,
-      tags,
-      category,
-      oldPrice,
-      newPrice,
-      account,
-    });
-    await newProduct.save();
-    return { message: 'Product added successfully' };
+    await getConnection()
+      .createQueryBuilder()
+      .update(Product)
+      .set({
+        name,
+        description,
+        sizes,
+        colors,
+        category,
+        stock,
+        tags,
+        oldPrice,
+        newPrice,
+        imageUrl,
+      })
+      .where('number = :number', { number: productNumber })
+      .execute();
+
+    return { message: 'Product successfully updated' };
   } catch (error) {
     winstonEnvLogger.error({
       message: 'An error occured',
@@ -72,4 +78,4 @@ const addProduct = async (
     throw error;
   }
 };
-export default addProduct;
+export default editProduct;

@@ -28,7 +28,8 @@ export interface IUpdateSettingArgs {
   currency: string;
 }
 
-export interface IAddProduct {
+export interface IProduct {
+  productNumber?: string;
   name: string;
   description: string;
   sizes: Product_Size[];

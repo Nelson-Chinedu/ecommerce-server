@@ -14,12 +14,14 @@ import getRecentOrders from '../../resolvers/client/query/getRecentOrders';
 import getRecentProducts from '../../resolvers/client/query/getRecentProducts';
 import getTotalMerchantProduct from '../../resolvers/client/query/getTotalMerchantProduct';
 import getTotalMerchantOrder from '../../resolvers/client/query/getTotalMerchantOrder';
+import getProduct from '../../resolvers/client/query/getProduct';
 
 import profile from '../generics/profile';
 import products from '../generics/products';
 import orders from '../generics/orders';
 import order from '../generics/order';
 import count from '../generics/count';
+import product from '../generics/product';
 
 export default new GraphQLObjectType({
   name: 'ClientQuery',
@@ -84,6 +86,12 @@ export default new GraphQLObjectType({
       description: 'Get merchant total order count',
       type: count,
       resolve: getTotalMerchantOrder,
+    },
+    getSingleProduct: {
+      description: 'Get merchant single product',
+      type: product,
+      args: { productNumber: { type: new GraphQLNonNull(GraphQLString) } },
+      resolve: getProduct,
     },
   }),
 });
