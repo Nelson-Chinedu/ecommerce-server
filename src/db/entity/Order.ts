@@ -15,9 +15,11 @@ import Product from './Product';
 import Account from './Account';
 
 export enum Status {
-  processing = 'processing',
-  canceled = 'cancelled',
-  delivered = 'delivered',
+  PROCESSING = 'processing',
+  CANCELLED = 'cancelled',
+  DELIVERED = 'delivered',
+  ENROUTE = 'Enroute',
+  OUT_OF_STOCK = 'Out-of-stock',
 }
 
 @Entity('Order')
@@ -56,6 +58,6 @@ export default class Order extends BaseEntity {
       length: 6,
       charset: 'numeric',
     });
-    this.status = Status.processing;
+    this.status = Status.PROCESSING;
   }
 }

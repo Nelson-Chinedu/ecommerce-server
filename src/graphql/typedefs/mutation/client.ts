@@ -18,6 +18,7 @@ import fileUpload from '../../resolvers/client/mutation/fileUpload';
 import CheckoutPayment from '../../resolvers/client/mutation/checkoutPayment';
 import deleteProduct from '../../resolvers/client/mutation/deleteProduct';
 import editProduct from '../../resolvers/client/mutation/editProduct';
+import updateOrderStatus from '../../resolvers/client/mutation/updateOrderStatus';
 
 export default new GraphQLObjectType({
   name: 'ClientMutation',
@@ -121,6 +122,15 @@ export default new GraphQLObjectType({
         imageUrl: { type: GraphQLString },
       },
       resolve: editProduct,
+    },
+    updateOrderStatus: {
+      description: 'Update order status',
+      type: message,
+      args: {
+        orderNumber: { type: new GraphQLNonNull(GraphQLString) },
+        status: { type: new GraphQLNonNull(GraphQLString) },
+      },
+      resolve: updateOrderStatus,
     },
   }),
 });
