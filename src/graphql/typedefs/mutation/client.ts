@@ -17,6 +17,7 @@ import updateStore from '../../resolvers/client/mutation/updateStore';
 import fileUpload from '../../resolvers/client/mutation/fileUpload';
 import CheckoutPayment from '../../resolvers/client/mutation/checkoutPayment';
 import deleteProduct from '../../resolvers/client/mutation/deleteProduct';
+import editProduct from '../../resolvers/client/mutation/editProduct';
 
 export default new GraphQLObjectType({
   name: 'ClientMutation',
@@ -100,6 +101,26 @@ export default new GraphQLObjectType({
       type: message,
       args: { productNumber: { type: new GraphQLNonNull(GraphQLString) } },
       resolve: deleteProduct,
+    },
+    editProduct: {
+      description: 'Edit product',
+      type: message,
+      args: {
+        productNumber: { type: new GraphQLNonNull(GraphQLString) },
+        name: { type: new GraphQLNonNull(GraphQLString) },
+        description: { type: new GraphQLNonNull(GraphQLString) },
+        sizes: {
+          type: new GraphQLNonNull(new GraphQLList(GraphQLString)),
+        },
+        colors: { type: new GraphQLNonNull(new GraphQLList(GraphQLString)) },
+        category: { type: new GraphQLNonNull(GraphQLString) },
+        stock: { type: new GraphQLNonNull(GraphQLString) },
+        tags: { type: new GraphQLNonNull(new GraphQLList(GraphQLString)) },
+        oldPrice: { type: new GraphQLNonNull(GraphQLString) },
+        newPrice: { type: new GraphQLNonNull(GraphQLString) },
+        imageUrl: { type: GraphQLString },
+      },
+      resolve: editProduct,
     },
   }),
 });
