@@ -15,6 +15,7 @@ import {
 
 import Account from './Account';
 import Order from './Order';
+import Store from './Store';
 
 export enum Product_Size {
   SMALL = 'S',
@@ -78,6 +79,10 @@ export default class Product extends BaseEntity {
 
   @OneToMany((_type: any) => Order, (order: Order) => order.product)
   orders: Order[];
+
+  @ManyToOne((_type: any) => Store, (store: Store) => store.product)
+  @JoinColumn()
+  store: Store;
 
   @BeforeInsert()
   addId() {

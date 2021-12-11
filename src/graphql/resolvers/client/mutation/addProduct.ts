@@ -1,7 +1,7 @@
 import winstonEnvLogger from 'winston-env-logger';
 import { ForbiddenError, UserInputError } from 'apollo-server';
 
-import { Account, Product } from '../../../../db';
+import { Account, Product, Store } from '../../../../db';
 import { AccountType } from '../../../../db/entity/Account';
 
 import IContext from '../../../../interface/IContext';
@@ -43,13 +43,22 @@ const addProduct = async (
       where: {
         id,
       },
+      relations: ['profile'],
     });
     if (!account || (account && account.accountType !== AccountType.MERCHANT)) {
       throw new ForbiddenError('Permission denied');
     } else if (account && account.blocked) {
       throw new ForbiddenError('Account blocked, kindly contact support');
     }
-    const newProduct: Product = Product.create({
+
+    const store = await Store.findOne({
+      where: {
+        profile: account.profile,
+      },
+    });
+
+    const newProduct: any = Product.create({
+      store,
       name,
       description,
       imageUrl,
