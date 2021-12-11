@@ -6,12 +6,14 @@ import {
   CreateDateColumn,
   Entity,
   JoinColumn,
+  OneToMany,
   OneToOne,
   PrimaryColumn,
   UpdateDateColumn,
 } from 'typeorm';
 
 import Profile from './Profile';
+import Product from './Product';
 
 @Entity('Store')
 export default class Store extends BaseEntity {
@@ -33,6 +35,9 @@ export default class Store extends BaseEntity {
   @OneToOne((_type: any) => Profile, (profile: Profile) => profile.store)
   @JoinColumn()
   profile: Profile;
+
+  @OneToMany((_type: any) => Product, (product: Product) => product.store)
+  product: Product[];
 
   @BeforeInsert()
   addId() {

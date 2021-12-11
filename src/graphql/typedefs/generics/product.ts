@@ -6,6 +6,7 @@ import {
 } from 'graphql';
 
 import account from './account';
+import store from './store';
 
 export default new GraphQLObjectType({
   name: 'product',
@@ -50,5 +51,6 @@ export default new GraphQLObjectType({
       type: GraphQLString,
     },
     account: { type: account },
+    store: { type: store },
   },
 });

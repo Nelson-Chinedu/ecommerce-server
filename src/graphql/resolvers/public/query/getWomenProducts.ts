@@ -17,6 +17,8 @@ const getWomenProducts = async (
   try {
     const products: Product[] | undefined = await getRepository(Product)
       .createQueryBuilder('product')
+      .leftJoinAndSelect('product.store', 'store')
+      .leftJoinAndSelect('product.account', 'account')
       .where('product.category = :product', {
         product: args.category,
       })
