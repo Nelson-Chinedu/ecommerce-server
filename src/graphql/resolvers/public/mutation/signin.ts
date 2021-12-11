@@ -40,7 +40,7 @@ const signin = async (
     const token: string = createToken(
       { id: account.id },
       process.env.JWT_KEY as string,
-      '7d'
+      '1d'
     );
     return {
       token,
