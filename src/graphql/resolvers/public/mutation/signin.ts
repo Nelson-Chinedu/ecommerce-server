@@ -4,6 +4,7 @@ import { UserInputError, ForbiddenError } from 'apollo-server-express';
 import { Account } from '../../../../db';
 import { isValidPassword } from '../../../../utils/passwordOp';
 import { createToken } from '../../../../utils/token';
+import sendToEmail from '../../../../utils/sendMail';
 
 const schema = Joi.object({
   email: Joi.string()
@@ -35,6 +36,28 @@ const signin = async (
     }
     if (account && account.blocked) {
       throw new ForbiddenError('Account blocked, kindly contact support');
+    }
+
+    if (account && !account.verified) {
+      const verificationToken: string = createToken(
+        { id: account.id },
+        process.env.VERIFICATION_JWT_kEY as string,
+        '7d'
+      );
+
+      const mailMessage = {
+        name: `Welcome ${email}`,
+        body: 'Please click the link below to verify your account',
+        route: 'verify-email',
+        query: 'token',
+        verificationLink: `${verificationToken}`,
+      };
+
+      await sendToEmail(email, mailMessage);
+      return {
+        message:
+          'Account not verified, Kindly check your mail to verify account',
+      };
     }
 
     const token: string = createToken(
