@@ -4,6 +4,7 @@ import message from '../generics/message';
 
 import signup from '../../resolvers/public/mutation/signup';
 import signin from '../../resolvers/public/mutation/signin';
+import verifyEmail from '../../resolvers/public/mutation/verifyEmail';
 
 export default new GraphQLObjectType({
   name: 'PublicMutation',
@@ -27,6 +28,14 @@ export default new GraphQLObjectType({
         password: { type: new GraphQLNonNull(GraphQLString) },
       },
       resolve: signin,
+    },
+    verifyEmail: {
+      description: 'Verify email address',
+      type: message,
+      args: {
+        token: { type: new GraphQLNonNull(GraphQLString) },
+      },
+      resolve: verifyEmail,
     },
   }),
 });

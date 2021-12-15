@@ -4,6 +4,7 @@ import { UserInputError } from 'apollo-server-express';
 
 import { Account, Profile, Location, Store } from '../../../../db';
 import { createToken } from '../../../../utils/token';
+import sendToEmail from '../../../../utils/sendMail';
 import { AccountType } from '../../../../db/entity/Account';
 
 const schema = Joi.object({
@@ -65,12 +66,23 @@ const signup = async (
 
     const token: string = createToken(
       { id: newAccount.id },
-      process.env.JWT_KEY as string,
+      process.env.VERIFICATION_JWT_kEY as string,
       '7d'
     );
+
+    const mailMessage = {
+      name: `Welcome ${email}`,
+      body: 'Please click the link below to verify your account',
+      route: 'verify-email',
+      query: 'token',
+      verificationLink: `${token}`,
+    };
+
+    await sendToEmail(email, mailMessage);
+
     return {
       status: 201,
-      message: 'Account successfully created',
+      message: `We have sent an email to ${email}. Please check your mail for next step`,
       token,
       accountType,
     };
