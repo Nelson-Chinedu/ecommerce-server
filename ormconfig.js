@@ -14,7 +14,7 @@ const getEnvVariables = {
 
 const entities = isDevEnv()
   ? 'src/db/entity/**/*.ts'
-  : './build/src/db/entity/**/*.js';
+  : './build/db/entity/**/*.js';
 
 module.exports = {
   type: 'postgres',

@@ -39,10 +39,10 @@ export default class Account extends BaseEntity {
   })
   accountType: AccountType;
 
-  @Column({ default: false })
+  @Column('boolean', { default: false })
   blocked: boolean;
 
-  @Column({ default: false })
+  @Column('boolean', { default: false })
   verified: boolean;
 
   @CreateDateColumn()
