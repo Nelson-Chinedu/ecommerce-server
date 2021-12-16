@@ -18,13 +18,13 @@ export default class Location extends BaseEntity {
   @PrimaryColumn('uuid')
   id: string;
 
-  @Column()
+  @Column('varchar')
   city: string;
 
-  @Column()
+  @Column('varchar')
   country: string;
 
-  @Column()
+  @Column('varchar')
   address: string;
 
   @CreateDateColumn()

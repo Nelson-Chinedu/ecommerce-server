@@ -23,7 +23,7 @@ export default class Store extends BaseEntity {
   @Column('varchar', { length: 255 })
   name: string;
 
-  @Column()
+  @Column('varchar')
   currency: string;
 
   @CreateDateColumn()

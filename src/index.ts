@@ -1,4 +1,5 @@
 import 'reflect-metadata';
+import '@babel/polyfill';
 import 'dotenv/config';
 import http from 'http';
 import express from 'express';
@@ -30,7 +31,7 @@ export async function startApolloServer() {
   const httpServer = http.createServer(app);
   const server = new ApolloServer({
     schema,
-    context: async ({ req }) => {
+    context: async ({ req }: any) => {
       if (req) {
         const bearerToken = req.headers.authorization; // get authorization from header
         if (!bearerToken) return;

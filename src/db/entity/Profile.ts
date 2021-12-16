@@ -20,19 +20,19 @@ export default class Profile extends BaseEntity {
   @PrimaryColumn('uuid')
   id: string;
 
-  @Column()
+  @Column('varchar')
   firstname: string;
 
-  @Column()
+  @Column('varchar')
   lastname: string;
 
-  @Column()
+  @Column('varchar')
   phoneNumber: string;
 
   @Column('varchar', { nullable: true })
   gender: string;
 
-  @Column()
+  @Column('varchar')
   imageUrl: string;
 
   @CreateDateColumn()

@@ -1,4 +1,4 @@
-import { GraphQLObjectType, GraphQLInt, GraphQLString } from 'graphql';
+import { GraphQLObjectType, GraphQLInt } from 'graphql';
 
 export default new GraphQLObjectType({
   name: 'product_count',
