@@ -70,7 +70,7 @@
     "start": "cross-env NODE_ENV=production node build/index.js",
     "dev": "cross-env NODE_ENV=development nodemon",
     "tslint": "tslint -c tslint.json 'src/**/*.ts'",
-    "build": "npm run build:js",
+    "build": "yarn build:js",
     "build:js": "babel src --out-dir build --extensions \".ts,.js\" --source-maps inline"
   },
   "repository": {
