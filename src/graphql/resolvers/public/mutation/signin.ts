@@ -39,24 +39,30 @@ const signin = async (
     }
 
     if (account && !account.verified) {
-      const verificationToken: string = createToken(
-        { id: account.id },
-        process.env.VERIFICATION_JWT_kEY as string,
-        '7d'
-      );
+      if (process.env.NODE_ENV === 'production') {
+        const verificationToken: string = createToken(
+          { id: account.id },
+          process.env.VERIFICATION_JWT_kEY as string,
+          '7d'
+        );
 
-      const mailMessage = {
-        name: `Welcome ${email}`,
-        body: 'Please click the link below to verify your account',
-        route: 'verify-email',
-        query: 'token',
-        verificationLink: `${verificationToken}`,
-      };
+        const mailMessage = {
+          name: `Welcome ${email}`,
+          body: 'Please click the link below to verify your account',
+          route: 'verify-email',
+          query: 'token',
+          verificationLink: `${verificationToken}`,
+        };
 
-      await sendToEmail(email, mailMessage);
+        await sendToEmail(email, mailMessage);
+      }
       return {
         message:
           'Account not verified, Kindly check your mail to verify account',
+        token: '',
+        accountType: '',
+        status: 401,
+        isLoggedin: false,
       };
     }
 
